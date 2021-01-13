@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Azure.Storage.Blobs" Version="12.7.0" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.1" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\LaundryIroningCommon.csproj" />
+    <ProjectReference Include="..\Contract\LaundryIroningContract.csproj" />
+    <ProjectReference Include="..\LaundryIroningData\LaundryIroningData.csproj" />
+    <ProjectReference Include="..\LaundryIroningEntity\LaundryIroningEntity.csproj" />
+    <ProjectReference Include="..\LaundryIroningHelper\LaundryIroningHelper.csproj" />
+    <ProjectReference Include="..\LaundryIroningLogging\LaundryIroningLogging.csproj" />
+  </ItemGroup>
+
+</Project>

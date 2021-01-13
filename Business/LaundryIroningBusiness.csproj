@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.1" />
+    <PackageReference Include="SendGrid" Version="9.22.0" />
+    <PackageReference Include="System.Data.DataSetExtensions" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common\LaundryIroningCommon.csproj" />
+    <ProjectReference Include="..\Contract\LaundryIroningContract.csproj" />
+    <ProjectReference Include="..\LaundryIroningEntity\LaundryIroningEntity.csproj" />
+    <ProjectReference Include="..\LaundryIroningHelper\LaundryIroningHelper.csproj" />
+    <ProjectReference Include="..\LaundryIroningRepository\LaundryIroningRepository.csproj" />
+  </ItemGroup>
+
+</Project>
