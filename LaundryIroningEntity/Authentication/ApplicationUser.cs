@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LaundryIroningEntity.Authentication
+﻿namespace LaundryIroningEntity.Authentication
 {
-   public class ApplicationUser
+    public class ApplicationUser
     {
     }
 }
