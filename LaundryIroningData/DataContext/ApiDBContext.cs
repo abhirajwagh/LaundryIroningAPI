@@ -1,4 +1,5 @@
 ﻿using LaundryIroningCommon;
+using LaundryIroningEntity.Entity;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -26,11 +27,16 @@ namespace LaundryIroningData.DataContext
         public ApiDBContext()
         { }
 
+        public virtual DbSet<Users> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-                                  
-                                             
+            modelBuilder.Entity<Users>(entity =>
+            {
+                entity.Property(e => e.UserId).HasColumnName("UserId").HasDefaultValueSql("(newid())");
+                entity.HasKey(e => e.UserId);
+            });
+
         }
        
        
