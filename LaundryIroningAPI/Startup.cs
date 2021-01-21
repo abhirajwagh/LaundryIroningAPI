@@ -46,29 +46,20 @@ namespace LaundryIroningAPI
 
             string str = Configuration.GetConnectionString("SQLApiConnection");
 
-            switch (Configuration["Settings:UseDatabase"])
-            {
-                //Remove case and disable mysql code
-                case "SqlDatabase":
-                    //Add SQl connection string settings
-                    services.AddDbContext<ApiDBContext>(c =>
-                     c.UseSqlServer(str,
-                     sqlServerOptionsAction: sqlOptions =>
-                     {
-                         sqlOptions.EnableRetryOnFailure(
-                             maxRetryCount: Convert.ToInt32(Configuration["Settings:SqlServerMaxRetryCount"]),
-                             maxRetryDelay: TimeSpan.FromSeconds(Convert.ToDouble(Configuration["Settings:SqlServerMaxRetryDelay"])),
-                             errorNumbersToAdd: null
-                         );
-                         sqlOptions.CommandTimeout(600);
-                     }), ServiceLifetime.Transient);
+            services.AddDbContext<ApiDBContext>(c =>
+                    c.UseSqlServer(str,
+                    sqlServerOptionsAction: sqlOptions =>
+                    {
+                        sqlOptions.EnableRetryOnFailure(
+                            maxRetryCount: Convert.ToInt32(Configuration["Settings:SqlServerMaxRetryCount"]),
+                            maxRetryDelay: TimeSpan.FromSeconds(Convert.ToDouble(Configuration["Settings:SqlServerMaxRetryDelay"])),
+                            errorNumbersToAdd: null
+                        );
+                        sqlOptions.CommandTimeout(600);
+                    }), ServiceLifetime.Transient);
 
 
-                    Container.DIContainer.SQLContainer.Injector(services);
-                    break;
-
-            }
-
+            Container.DIContainer.SQLContainer.Injector(services);
             services.AddResponseCompression();
             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>
             {
