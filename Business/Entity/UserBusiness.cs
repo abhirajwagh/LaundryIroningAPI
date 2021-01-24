@@ -61,8 +61,8 @@ namespace LaundryIroningBusiness.Entity
             if (existingTemplate.Any())
                 return (int)StatusCode.ConflictStatusCode;
 
-            user.CreatedAt = DateTimeOffset.UtcNow;
-              
+            user.CreatedAt = DateTime.UtcNow;
+            user.UserId = Guid.NewGuid();  
 
             await _userRepository.AddAsync(user);
             await _userRepository.Uow.SaveChangesAsync();
