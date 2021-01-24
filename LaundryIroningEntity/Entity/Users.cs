@@ -13,7 +13,7 @@ namespace LaundryIroningEntity.Entity
         public string MobileNo { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
-        public DateTimeOffset? CreatedAt { get; set; }
+        public DateTime? CreatedAt { get; set; }
         public bool IsAdmin { get; set; }
     }
 }
