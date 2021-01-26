@@ -1,5 +1,6 @@
 ﻿using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
+using LaundryIroningEntity.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +15,7 @@ namespace LaundryIroningContract.Business
         Task<List<Users>> GetUsersAsync();
 
         Task<int> AddUserAsync(Users user);
+
+        Task<Users> GetUserDetailsAsync(Login login);
     }
 }
