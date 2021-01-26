@@ -2,6 +2,7 @@
 using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
+using LaundryIroningEntity.ViewModels;
 using LaundryIroningHelper.Enum;
 using System;
 using System.Collections.Generic;
@@ -41,16 +42,46 @@ namespace LaundryIroningBusiness.Entity
         #endregion
 
 
+        /// <summary>
+        /// Get All User
+        /// </summary>
+        /// <returns></returns>
         #region Get Method
         public async Task<List<Users>> GetUsersAsync()
         {
             var unitsList = await _userRepository.SelectAsync();
             return unitsList.ToList();
         }
+
+        /// <summary>
+        /// Check user exists
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        public async Task<Users> GetUserDetailsAsync(Login login)
+        {
+            if (string.IsNullOrEmpty(login.UserName) || login.Password == null)
+                return new Users();
+
+            var user = await _userRepository.SelectAsync(u => u.UserName == login.UserName && u.Password == login.Password);
+            if (user.Count() > 0)
+            {
+                return user[0];
+            } else
+            {
+                return new Users();
+            }
+            
+        }
         #endregion
 
         #region Add Method
 
+        /// <summary>
+        /// Add new user
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public async Task<int> AddUserAsync(Users user)
         {
             if (string.IsNullOrEmpty(user.UserName) || user.Password == null || user.Name == null || user.MobileNo == null)
@@ -69,6 +100,7 @@ namespace LaundryIroningBusiness.Entity
 
             return (int)StatusCode.SuccessfulStatusCode;
         }
+        
         #endregion
     }
 }

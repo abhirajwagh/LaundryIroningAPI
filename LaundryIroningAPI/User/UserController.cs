@@ -3,6 +3,7 @@ using LaundryIroningCommon;
 using LaundryIroningContract.Business;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
+using LaundryIroningEntity.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
@@ -59,6 +60,20 @@ namespace LaundryIroningAPI.User
         {
             int result = await _userBusiness.AddUserAsync(users);
             return commonMethods.GetResultMessages(result, MethodType.Add);
+        }
+
+        /// <summary>
+        /// Return the user if login details match else return blank user
+        /// </summary>
+        /// <param name="login"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("GetUserDetails")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserDetailsAsync(
+          [FromBody, SwaggerParameter("Model containing the details of the User to check", Required = true)] Login login)
+        {
+            return Ok(await _userBusiness.GetUserDetailsAsync(login));
         }
         #endregion
     }
