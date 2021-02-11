@@ -1,4 +1,5 @@
-﻿using LaundryIroningContract.Business;
+﻿using LaundryIroningCommon;
+using LaundryIroningContract.Business;
 using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
@@ -60,17 +61,33 @@ namespace LaundryIroningBusiness.Entity
         /// <returns></returns>
         public async Task<Users> GetUserDetailsAsync(Login login)
         {
-            if (string.IsNullOrEmpty(login.UserName) || login.Password == null)
-                return new Users();
+            try
+            {
+                if (string.IsNullOrEmpty(login.UserName) || login.Password == null)
+                    return new Users();
 
-            var user = await _userRepository.SelectAsync(u => u.UserName == login.UserName && u.Password == login.Password);
-            if (user.Count() > 0)
-            {
-                return user[0];
-            } else
-            {
+                var user = await _userRepository.SelectAsync(u => u.UserName == login.UserName);
+                var pasword = EncryptionandDecryption.Decrypt(user[0].Password);
+                if (user.Count() > 0)
+                {
+                    if (pasword == login.Password)
+                    {
+                        return user[0];
+                    } else
+                    {
+                        return new Users();
+                    }
+                }
+                else
+                {
+                    return new Users();
+                }
+            }
+            catch (Exception ex)
+            { 
                 return new Users();
             }
+           
             
         }
         #endregion
@@ -91,7 +108,7 @@ namespace LaundryIroningBusiness.Entity
 
             if (existingTemplate.Any())
                 return (int)StatusCode.ConflictStatusCode;
-
+            user.Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
             user.CreatedAt = DateTime.UtcNow;
             user.UserId = Guid.NewGuid();  
 

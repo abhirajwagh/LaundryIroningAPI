@@ -28,13 +28,19 @@ namespace LaundryIroningData.DataContext
         { }
 
         public virtual DbSet<Users> Users { get; set; }
-
+        public virtual DbSet<IroningOrder> IroningOrder { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>(entity =>
             {
                 entity.Property(e => e.UserId).HasColumnName("UserId").HasDefaultValueSql("(newid())");
                 entity.HasKey(e => e.UserId);
+            });
+
+            modelBuilder.Entity<IroningOrder>(entity =>
+            {
+                entity.Property(e => e.Id).HasColumnName("Id");
+                entity.HasKey(e => e.Id);
             });
 
         }
