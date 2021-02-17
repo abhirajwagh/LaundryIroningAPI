@@ -55,7 +55,7 @@ namespace LaundryIroningCommon
    
     public class ProcedureConstants
     {
-       
+        public const string GetIroningOrderDetailsById = "GetIroningOrderDetailsById";
 
     }
 

@@ -13,7 +13,7 @@ namespace LaundryIroningContract.Business
         IUnitOfWork Uow { get; set; }
 
         Task<List<IroningOrder>> GetAllIroningOrderAsync();
-        Task<IroningOrder> GetIroningOrderAsync(int orderId);
+        Task<IroningOrderViewModel> GetIroningOrderAsync(int orderId);
         Task<int> AddIroningOrderAsync(IroningOrder order);
     }
 }
