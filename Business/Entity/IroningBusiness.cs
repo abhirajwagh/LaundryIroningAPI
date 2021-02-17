@@ -49,10 +49,9 @@ namespace LaundryIroningBusiness.Entity
             return orderList.ToList();
         }
 
-        public async Task<IroningOrder> GetIroningOrderAsync(int orderId)
+        public async Task<IroningOrderViewModel> GetIroningOrderAsync(int orderId)
         {
-            var orderdetails = (await _ironingRepository.SelectAsync(x=>x.Id == orderId)).FirstOrDefault();
-            return orderdetails;
+            return await _ironingRepository.GetIroningOrderAsync(orderId);
         }
 
         #endregion

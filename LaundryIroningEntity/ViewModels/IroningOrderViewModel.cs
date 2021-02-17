@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace LaundryIroningEntity.Entity
+namespace LaundryIroningEntity.ViewModels
 {
-    public class IroningOrder
+   public class IroningOrderViewModel
     {
         public int Id { get; set; }
+
+        public string OrderId { get; set; }
         public DateTime PickUpDate { get; set; }
         public string PickUpTimeSlot { get; set; }
         public string PickUpAddress { get; set; }
