@@ -30,7 +30,11 @@ namespace LaundryIroningAPI.Container
                 services.AddScoped<IIroningBusiness, IroningBusiness>();
                 services.AddScoped<IIroningRepository, IroningRepository>();
 
+                services.AddScoped<ILaundryBusiness, LaundryBusiness>();
+                services.AddScoped<ILaundryRepository, LaundryRepository>();
 
+                services.AddScoped<IIroningLaundryBusiness, IroningLaundryBusiness>();
+                services.AddScoped<IIroningLaundryRepository, IroningLaundryRepository>();
             }
                    
         }

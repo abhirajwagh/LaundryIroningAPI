@@ -13,45 +13,45 @@ using System.Threading.Tasks;
 
 namespace LaundryIroningBusiness.Entity
 {
-    public class IroningBusiness: IIroningBusiness
+    public class LaundryBusiness: ILaundryBusiness
     {
         #region Private Variable
 
-        private readonly IIroningRepository _ironingRepository;
+        private readonly ILaundryRepository _laundryRepository;
 
         #endregion
 
         #region Constructor
 
-        public IroningBusiness(IIroningRepository ironingRepository)
+        public LaundryBusiness(ILaundryRepository laundryRepository)
         {
-            _ironingRepository = ironingRepository;
+            _laundryRepository = laundryRepository;
         }
 
         public IUnitOfWork Uow
         {
             get
             {
-                return _ironingRepository.Uow;
+                return _laundryRepository.Uow;
             }
             set
             {
-                _ironingRepository.Uow = value;
+                _laundryRepository.Uow = value;
             }
         }
 
         #endregion
 
         #region Get Method
-        public async Task<List<IroningOrder>> GetAllIroningOrderAsync()
+        public async Task<List<LaundryOrder>> GetAllLaundryOrderAsync()
         {
-            var orderList = await _ironingRepository.SelectAsync();
+            var orderList = await _laundryRepository.SelectAsync();
             return orderList.ToList();
         }
 
-        public async Task<IroningOrderViewModel> GetIroningOrderAsync(int orderId)
+        public async Task<LaundryOrderViewModel> GetLaundryOrderAsync(int orderId)
         {
-            return await _ironingRepository.GetIroningOrderAsync(orderId);
+            return await _laundryRepository.GetLaundryOrderAsync(orderId);
         }
 
         #endregion
@@ -59,11 +59,11 @@ namespace LaundryIroningBusiness.Entity
         #region Add Method
 
         /// <summary>
-        /// Add new ironing order
+        /// Add new laundry order
         /// </summary>
         /// <param name="order"></param>
         /// <returns></returns>
-        public async Task<int> AddIroningOrderAsync(IroningOrder order)
+        public async Task<int> AddLaundryOrderAsync(LaundryOrder order)
         {
             if (order.NoOfCloths == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null)
                 return (int)StatusCode.ExpectationFailed;
@@ -71,8 +71,8 @@ namespace LaundryIroningBusiness.Entity
             order.CreatedAt = DateTime.UtcNow;
             order.IsDelivered = false;
 
-            await _ironingRepository.AddAsync(order);
-            await _ironingRepository.Uow.SaveChangesAsync();
+            await _laundryRepository.AddAsync(order);
+            await _laundryRepository.Uow.SaveChangesAsync();
             return order.Id;
         }
 
