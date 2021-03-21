@@ -17,5 +17,6 @@ namespace LaundryIroningContract.Business
         Task<int> AddUserAsync(Users user);
 
         Task<Users> GetUserDetailsAsync(Login login);
+        Task<bool> GetUserNameAsync(string username);
     }
 }

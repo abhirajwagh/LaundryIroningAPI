@@ -26,6 +26,7 @@ namespace LaundryIroningAPI.Container
 
                 services.AddScoped<IUserBusiness, UserBusiness>();
                 services.AddScoped<IUserRepository, UserRepository>();
+                services.AddScoped<IUserTypesRepository, UserTypesRepository>();
 
                 services.AddScoped<IIroningBusiness, IroningBusiness>();
                 services.AddScoped<IIroningRepository, IroningRepository>();

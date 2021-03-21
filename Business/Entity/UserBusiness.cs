@@ -18,14 +18,15 @@ namespace LaundryIroningBusiness.Entity
         #region Private Variable
 
         private readonly IUserRepository _userRepository;
-
+        private readonly IUserTypesRepository _userTypesRepository;
         #endregion
 
         #region Constructor
 
-        public UserBusiness(IUserRepository userRepository)
+        public UserBusiness(IUserRepository userRepository, IUserTypesRepository userTypesRepository)
         {
             _userRepository = userRepository;
+            _userTypesRepository = userTypesRepository;
         }
 
         public IUnitOfWork Uow
@@ -37,6 +38,7 @@ namespace LaundryIroningBusiness.Entity
             set
             {
                 _userRepository.Uow = value;
+                _userTypesRepository.Uow = value;
             }
         }
 
@@ -52,6 +54,24 @@ namespace LaundryIroningBusiness.Entity
         {
             var unitsList = await _userRepository.SelectAsync();
             return unitsList.ToList();
+        }
+
+        /// <summary>
+        /// get 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public async Task<bool> GetUserNameAsync(string username)
+        {
+            var users = await _userRepository.SelectAsync(u => u.UserName == username);
+            if (users.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -105,12 +125,14 @@ namespace LaundryIroningBusiness.Entity
                 return (int)StatusCode.ExpectationFailed;
 
             var existingTemplate = await _userRepository.SelectAsync(u => u.UserName == user.UserName || u.MobileNo == user.MobileNo);
+            var userTypes = await _userTypesRepository.SelectAsync(u => u.UserType == UserTypesConstants.Customer);
 
             if (existingTemplate.Any())
                 return (int)StatusCode.ConflictStatusCode;
             user.Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
             user.CreatedAt = DateTime.UtcNow;
-            user.UserId = Guid.NewGuid();  
+            user.UserId = Guid.NewGuid();
+            user.UserTypeId = userTypes[0].UserTypeId;
 
             await _userRepository.AddAsync(user);
             await _userRepository.Uow.SaveChangesAsync();

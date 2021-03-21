@@ -66,6 +66,14 @@ namespace LaundryIroningCommon
 
     }
 
+    public class UserTypesConstants
+    {
+        public const string Customer = "Customer";
+        public const string Agent = "Agent";
+        public const string Admin = "Admin";
+        public const string SuperAdmin = "SuperAdmin";
+    }
+
 
 
 }
