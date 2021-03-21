@@ -15,5 +15,6 @@ namespace LaundryIroningEntity.Entity
         public string Email { get; set; }
         public DateTime? CreatedAt { get; set; }
         public bool IsAdmin { get; set; }
+        public Guid UserTypeId { get; set; }
     }
 }

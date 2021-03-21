@@ -72,6 +72,20 @@ namespace LaundryIroningAPI.User
         {
             return Ok(await _userBusiness.GetUserDetailsAsync(login));
         }
+
+        
+        /// <summary>
+        /// check username is exists 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("CheckUserName")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserNameAsync(string userName)
+        {
+            return Ok(await _userBusiness.GetUserNameAsync(userName));
+        }
         #endregion
     }
 }
