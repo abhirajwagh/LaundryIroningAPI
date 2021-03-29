@@ -56,6 +56,17 @@ namespace LaundryIroningBusiness.Entity
             return unitsList.ToList();
         }
 
+        public async Task<List<AdminAgentUserViewModel>> GetAdminAgentOperatorUsersAsync(List<string> userType)
+        {
+            var userList = await _userRepository.GetAdminAgentOperatorUsersAsync(userType);
+            if (userList.Count() > 0)
+                for (int i = 0; i < userList.Count(); i++)
+                {
+                    userList[i].Password = Convert.ToString(EncryptionandDecryption.Decrypt(userList[i].Password));
+                }
+            return userList.ToList();
+        }
+
         /// <summary>
         /// get 
         /// </summary>
@@ -103,7 +114,7 @@ namespace LaundryIroningBusiness.Entity
                     return new Users();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             { 
                 return new Users();
             }
@@ -139,7 +150,116 @@ namespace LaundryIroningBusiness.Entity
 
             return (int)StatusCode.SuccessfulStatusCode;
         }
-        
+
+        /// <summary>
+        /// add the admin or agent user 
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<int> AddAdminAgentUsersAsync(AdminAgentUserViewModel user)
+        {
+            if (string.IsNullOrEmpty(user.UserName) || user.Password == null || user.Name == null || user.MobileNo == null)
+                return (int)StatusCode.ExpectationFailed;
+
+            var existingTemplate = await _userRepository.SelectAsync(u => u.UserName == user.UserName || u.MobileNo == user.MobileNo);
+            if (existingTemplate.Any())
+                return (int)StatusCode.ConflictStatusCode;
+
+            var userTypes = new List<UserTypes>();
+            if (user.IsAdmin == false && user.IsAgent == true && user.IsOperator == false)
+            {
+                userTypes = (await _userTypesRepository.SelectAsync(u => u.UserType == UserTypesConstants.Agent)).ToList();
+            }
+            else if (user.IsAdmin == true && user.IsAgent == false && user.IsOperator == false)
+            {
+                userTypes = (await _userTypesRepository.SelectAsync(u => u.UserType == UserTypesConstants.Admin)).ToList();
+            }
+            else if (user.IsAdmin == false && user.IsAgent == false && user.IsOperator == true)
+            {
+                userTypes = (await _userTypesRepository.SelectAsync(u => u.UserType == UserTypesConstants.Operator)).ToList();
+            }
+
+            var newuser = new Users();
+            newuser.UserId = Guid.NewGuid();
+            newuser.UserName = user.UserName;
+            newuser.Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
+            newuser.Name = user.Name;
+            newuser.MobileNo = user.MobileNo;
+            newuser.Address = user.Address;
+            newuser.Email = user.Email;
+            newuser.CreatedAt = DateTime.UtcNow;
+            newuser.UserTypeId = userTypes[0].UserTypeId;
+            newuser.DateOfBirth = user.DateOfBirth;
+            newuser.AadharNo = user.AadharNo;
+            newuser.DrivingLicenceNo = user.DrivingLicenceNo;
+            
+
+            await _userRepository.AddAsync(newuser);
+            await _userRepository.Uow.SaveChangesAsync();
+
+            return (int)StatusCode.SuccessfulStatusCode;
+        }
+
+        #endregion
+
+        #region Update Methods
+        /// <summary>
+        /// update admin and agent users
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<int> UpdateAdminAgentUsersAsync(AdminAgentUserViewModel user)
+        {
+            if (string.IsNullOrEmpty(user.UserName) || user.Password == null || user.Name == null || user.MobileNo == null)
+                return (int)StatusCode.ExpectationFailed;
+
+            var existingTemplate = await _userRepository.SelectAsync(u => u.UserId == user.UserId);
+            if (existingTemplate.Any())
+            {
+                var existingMobile = await _userRepository.SelectAsync(u => u.MobileNo == user.MobileNo && u.UserId != user.UserId);
+                if (existingMobile.Any())
+                    return (int)StatusCode.ConflictStatusCode;
+
+                existingTemplate[0].Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
+                existingTemplate[0].Name = user.Name;
+                existingTemplate[0].MobileNo = user.MobileNo;
+                existingTemplate[0].Address = user.Address;
+                existingTemplate[0].Email = user.Email;
+                existingTemplate[0].CreatedAt = DateTime.UtcNow;
+
+                await _userRepository.UpdateAsync(existingTemplate[0]);
+                await _userRepository.Uow.SaveChangesAsync();
+
+                return (int)StatusCode.SuccessfulStatusCode;
+
+            } else
+            {
+                return (int)StatusCode.NoContent;
+            }
+           
+        }
+        #endregion
+
+        #region Delete Methods
+
+        /// <summary>
+        /// delete admin agent users
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<int> DeleteAdminAgentUsers(Guid userId)
+        {
+            var existingTemplate = await _userRepository.SelectAsync(u => u.UserId == userId);
+            if (existingTemplate.Any())
+            {
+                await _userRepository.DeleteAsync(existingTemplate[0]);
+                await _userRepository.Uow.SaveChangesAsync();
+                return (int)StatusCode.SuccessfulStatusCode;
+            } else
+            {
+                return (int)StatusCode.NoContent;
+            }
+        }
         #endregion
     }
 }
