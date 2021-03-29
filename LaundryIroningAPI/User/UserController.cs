@@ -7,6 +7,8 @@ using LaundryIroningEntity.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace LaundryIroningAPI.User
@@ -39,6 +41,35 @@ namespace LaundryIroningAPI.User
         {
             return Ok(await _userBusiness.GetUsersAsync());
         }
+
+        /// <summary>
+        /// Return the admin,agent,operator users
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("GetAdminAgentOperatorUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAdminAgentOperatorUsersAsync()
+        {
+            List<string> userType = new List<string>();
+            userType.Add(UserTypesConstants.Admin);
+            userType.Add(UserTypesConstants.Agent);
+            userType.Add(UserTypesConstants.Operator);
+            return Ok(await _userBusiness.GetAdminAgentOperatorUsersAsync(userType));
+        }
+        /// <summary>
+        /// check username is exists 
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [ActionName("CheckUserName")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserNameAsync(string userName)
+        {
+            return Ok(await _userBusiness.GetUserNameAsync(userName));
+        }
+
         #endregion
 
         #region Post Methods
@@ -73,19 +104,61 @@ namespace LaundryIroningAPI.User
             return Ok(await _userBusiness.GetUserDetailsAsync(login));
         }
 
-        
+
         /// <summary>
-        /// check username is exists 
+        /// Add the admin or agent users
         /// </summary>
-        /// <param name="userName"></param>
+        /// <param name="users"></param>
         /// <returns></returns>
-        [HttpGet]
-        [ActionName("CheckUserName")]
+        [HttpPost]
+        [ActionName("AddAdminAgentUsers")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetUserNameAsync(string userName)
+        public async Task<IActionResult> AddAdminAgentUsersAsync(
+            [FromBody, SwaggerParameter("Model containing the details of the new User to create", Required = true)] AdminAgentUserViewModel users)
         {
-            return Ok(await _userBusiness.GetUserNameAsync(userName));
+            int result = await _userBusiness.AddAdminAgentUsersAsync(users);
+            return commonMethods.GetResultMessages(result, MethodType.Add);
         }
+
+
+        /// <summary>
+        /// update admin or agent users
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("UpdateAdminAgentUsers")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateAdminAgentUsersAsync(
+            [FromBody, SwaggerParameter("Model containing the details of the User to update", Required = true)] AdminAgentUserViewModel users)
+        {
+            int result = await _userBusiness.UpdateAdminAgentUsersAsync(users);
+            return commonMethods.GetResultMessages(result, MethodType.Update);
+        }
+        #endregion
+
+        #region "Delete Methods"
+
+
+        /// <summary>
+        /// delete admin or agent users
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [ActionName("DeleteAdminAgentUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> DeleteAdminAgentUsers(
+            [SwaggerParameter("ID of users to be deleted", Required = true)] Guid userId)
+        {
+            
+            int result = await _userBusiness.DeleteAdminAgentUsers(userId);
+            return commonMethods.GetResultMessages(result, MethodType.Delete);
+        }
+
         #endregion
     }
 }
