@@ -7,6 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 using LaundryIroningEntity.Entity;
 using LaundryIroningCommon;
+using System;
+using System.Collections.Generic;
 
 namespace LaundryIroningAPI.Laundry
 {
@@ -44,6 +46,14 @@ namespace LaundryIroningAPI.Laundry
         public async Task<IActionResult> GetLaundryOrderAsync(int orderId)
         {
             return Ok(await _iLaundryBusiness.GetLaundryOrderAsync(orderId));
+        }
+
+        [HttpGet]
+        [ActionName("GetLaundryOrdersForAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetLaundryOrdersForAdminAsync()
+        {
+            return Ok(await _iLaundryBusiness.GetLaundryOrdersForAdminAsync());
         }
         #endregion
 

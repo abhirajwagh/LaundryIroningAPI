@@ -4,6 +4,7 @@ using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using LaundryIroningHelper.Enum;
 using System;
 using System.Collections.Generic;
@@ -18,14 +19,15 @@ namespace LaundryIroningBusiness.Entity
         #region Private Variable
 
         private readonly IIroningRepository _ironingRepository;
-
+        private readonly IOrderAgentMappingRepository _orderAgentMappingRepository;
         #endregion
 
         #region Constructor
 
-        public IroningBusiness(IIroningRepository ironingRepository)
+        public IroningBusiness(IIroningRepository ironingRepository, IOrderAgentMappingRepository orderAgentMappingRepository)
         {
             _ironingRepository = ironingRepository;
+            _orderAgentMappingRepository = orderAgentMappingRepository;
         }
 
         public IUnitOfWork Uow
@@ -37,6 +39,7 @@ namespace LaundryIroningBusiness.Entity
             set
             {
                 _ironingRepository.Uow = value;
+                _orderAgentMappingRepository.Uow = value;
             }
         }
 
@@ -54,6 +57,11 @@ namespace LaundryIroningBusiness.Entity
             return await _ironingRepository.GetIroningOrderAsync(orderId);
         }
 
+        public async Task<List<GetIroningOrdersForAdmin>> GetIroningOrdersForAdminAsync()
+        {
+            return await _ironingRepository.GetIroningOrdersForAdminAsync();
+        }
+
         #endregion
 
         #region Add Method
@@ -65,15 +73,42 @@ namespace LaundryIroningBusiness.Entity
         /// <returns></returns>
         public async Task<int> AddIroningOrderAsync(IroningOrder order)
         {
-            if (order.NoOfCloths == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null)
+            if (order.NoOfCloths == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null 
+                || order.PickUpAddress == null || order.PaymentMode == null || order.OrderStatus == null)
                 return (int)StatusCode.ExpectationFailed;
 
             order.CreatedAt = DateTime.UtcNow;
-            order.IsDelivered = false;
 
             await _ironingRepository.AddAsync(order);
             await _ironingRepository.Uow.SaveChangesAsync();
             return order.Id;
+        }
+
+        public async Task<int> UpdateOrderAssignemnt(Guid agentId,List<string> OrderId)
+        {
+            if (OrderId.Count()<=0)
+                return (int)StatusCode.ExpectationFailed;
+
+            var existingOrderMapping = await _orderAgentMappingRepository.SelectAsync(o=> OrderId.Contains(o.OrderId));
+            if (existingOrderMapping.Any())
+            {
+                await _orderAgentMappingRepository.DeleteRangeAsync(existingOrderMapping);
+            }
+                var orderMappingList = new List<OrderAgentMapping>();
+
+                for (int i = 0; i < OrderId.Count(); i++)
+                {
+                    var orderMapping = new OrderAgentMapping();
+                    orderMapping.OrderMappingId = Guid.NewGuid();
+                    orderMapping.AgentId = agentId;
+                    orderMapping.OrderId = OrderId[i];
+                    orderMappingList.Add(orderMapping);
+                }
+                await _orderAgentMappingRepository.AddRangeAsync(orderMappingList);
+                await _orderAgentMappingRepository.Uow.SaveChangesAsync();
+            
+
+            return (int)StatusCode.SuccessfulStatusCode;
         }
 
         #endregion

@@ -4,6 +4,7 @@ using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using LaundryIroningHelper.Enum;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,11 @@ namespace LaundryIroningBusiness.Entity
             return await _laundryRepository.GetLaundryOrderAsync(orderId);
         }
 
+        public async Task<List<GetLaundryOrdersForAdmin>> GetLaundryOrdersForAdminAsync()
+        {
+            return await _laundryRepository.GetLaundryOrdersForAdminAsync();
+        }
+
         #endregion
 
         #region Add Method
@@ -65,11 +71,11 @@ namespace LaundryIroningBusiness.Entity
         /// <returns></returns>
         public async Task<int> AddLaundryOrderAsync(LaundryOrder order)
         {
-            if (order.NoOfCloths == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null)
+            if (order.NoOfKgs == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null
+                || order.PaymentMode == null || order.OrderStatus == null)
                 return (int)StatusCode.ExpectationFailed;
 
             order.CreatedAt = DateTime.UtcNow;
-            order.IsDelivered = false;
 
             await _laundryRepository.AddAsync(order);
             await _laundryRepository.Uow.SaveChangesAsync();

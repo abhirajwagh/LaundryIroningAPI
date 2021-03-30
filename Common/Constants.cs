@@ -59,6 +59,9 @@ namespace LaundryIroningCommon
         public const string GetLaundryOrderDetailsById = "GetLaundryOrderDetailsById";
         public const string GetIroningLaundryOrderDetailsById = "GetIroningLaundryOrderDetailsById";
         public const string GetUserByUserType = "GetUserByUserType";
+        public const string GetIroningOrdersForAdmin = "GetIroningOrdersForAdmin";
+        public const string GetLaundryOrdersForAdmin = "GetLaundryOrdersForAdmin";
+        public const string GetIroningLaundryOrdersForAdmin = "GetIroningLaundryOrdersForAdmin";
     }
 
     public class UrlConstants

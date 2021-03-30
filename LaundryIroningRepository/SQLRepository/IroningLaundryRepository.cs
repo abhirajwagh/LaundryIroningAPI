@@ -4,6 +4,7 @@ using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using LaundryIroningHelper;
 using LaundryIroningRepository.CommonRepository;
 using System;
@@ -38,6 +39,11 @@ namespace LaundryIroningRepository.SQLRepository
                 new Parameters("orderId", orderId)
             };
             return (await _executerStoreProc.ExecuteProcAsync<IroningLaundryOrderViewModel>(ProcedureConstants.GetIroningLaundryOrderDetailsById, param))[0];
+        }
+
+        public async Task<List<GetIroningLaundryOrdersForAdmin>> GetIroningLaundryOrdersForAdminAsync()
+        {
+            return (await _executerStoreProc.ExecuteProcAsync<GetIroningLaundryOrdersForAdmin>(ProcedureConstants.GetIroningLaundryOrdersForAdmin));
         }
         #endregion
     }

@@ -2,6 +2,7 @@
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,5 +18,6 @@ namespace LaundryIroningContract.Repository
         }
 
         Task<LaundryOrderViewModel> GetLaundryOrderAsync(int orderId);
+        Task<List<GetLaundryOrdersForAdmin>> GetLaundryOrdersForAdminAsync();
     }
 }

@@ -57,6 +57,16 @@ namespace LaundryIroningAPI.User
             userType.Add(UserTypesConstants.Operator);
             return Ok(await _userBusiness.GetAdminAgentOperatorUsersAsync(userType));
         }
+
+        [HttpGet]
+        [ActionName("GetAgentUsers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAgentUsersAsync()
+        {
+            List<string> userType = new List<string>();
+            userType.Add(UserTypesConstants.Agent);
+            return Ok(await _userBusiness.GetAgentUsersAsync(userType));
+        }
         /// <summary>
         /// check username is exists 
         /// </summary>
