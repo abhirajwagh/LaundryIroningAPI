@@ -67,6 +67,21 @@ namespace LaundryIroningBusiness.Entity
             return userList.ToList();
         }
 
+        public async Task<List<AgentViewModel>> GetAgentUsersAsync(List<string> userType)
+        {
+            var agentList = new List<AgentViewModel>();
+            var userList = await _userRepository.GetAdminAgentOperatorUsersAsync(userType);
+            for (int i = 0; i < userList.Count(); i++)
+            {
+                var agentModel = new AgentViewModel();
+                agentModel.UserId = userList[i].UserId;
+                agentModel.UserName = userList[i].UserName;
+                agentModel.Name = userList[i].Name;
+                agentModel.MobileNo = userList[i].MobileNo;
+                agentList.Add(agentModel);
+            }
+            return agentList;
+        }
         /// <summary>
         /// get 
         /// </summary>

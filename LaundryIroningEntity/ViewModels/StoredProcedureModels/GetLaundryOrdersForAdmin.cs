@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace LaundryIroningEntity.Entity
+namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
 {
-    public class IroningLaundryOrder
+   public class GetLaundryOrdersForAdmin
     {
         public int Id { get; set; }
+        public string OrderId { get; set; }
         public DateTime PickUpDate { get; set; }
         public string PickUpTimeSlot { get; set; }
         public string PickUpAddress { get; set; }
         public int NoOfKgs { get; set; }
-        public Guid OrderBy { get; set; }
         public DateTime CreatedAt { get; set; }
         public string TotalCost { get; set; }
         public string OrderStatus { get; set; }
@@ -20,5 +19,13 @@ namespace LaundryIroningEntity.Entity
         public DateTime? ProcessedAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
         public string PaymentMode { get; set; }
+        public Guid? AgentId { get; set; }
+        public string AgentUserName { get; set; }
+        public string AgentName { get; set; }
+        public string AgentMobileNo { get; set; }
+        public Guid CustomerId { get; set; }
+        public string CustomerUserName { get; set; }
+        public string CustomerName { get; set; }
+        public string CustomerMobileNo { get; set; }
     }
 }

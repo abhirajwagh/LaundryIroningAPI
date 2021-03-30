@@ -13,6 +13,7 @@ namespace LaundryIroningContract.Business
         IUnitOfWork Uow { get; set; }
         Task<List<Users>> GetUsersAsync();
         Task<List<AdminAgentUserViewModel>> GetAdminAgentOperatorUsersAsync(List<string> userType);
+        Task<List<AgentViewModel>> GetAgentUsersAsync(List<string> userType);
         Task<int> AddUserAsync(Users user);
         Task<Users> GetUserDetailsAsync(Login login);
         Task<bool> GetUserNameAsync(string username);

@@ -45,6 +45,14 @@ namespace LaundryIroningAPI.IroningLaundry
         {
             return Ok(await _ironingLaundryBusiness.GetIroningLaundryOrderAsync(orderId));
         }
+
+        [HttpGet]
+        [ActionName("GetIroningLaundryOrdersForAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetIroningLaundryOrdersForAdminAsync()
+        {
+            return Ok(await _ironingLaundryBusiness.GetIroningLaundryOrdersForAdminAsync());
+        }
         #endregion
 
         #region Post Methods

@@ -7,6 +7,8 @@ using Swashbuckle.AspNetCore.Annotations;
 using System.Threading.Tasks;
 using LaundryIroningEntity.Entity;
 using LaundryIroningCommon;
+using System;
+using System.Collections.Generic;
 
 namespace LaundryIroningAPI.Ironing
 {
@@ -45,6 +47,14 @@ namespace LaundryIroningAPI.Ironing
         {
             return Ok(await _ironingBusiness.GetIroningOrderAsync(orderId));
         }
+
+        [HttpGet]
+        [ActionName("GetIroningOrdersForAdmin")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetIroningOrdersForAdminAsync()
+        {
+            return Ok(await _ironingBusiness.GetIroningOrdersForAdminAsync());
+        }
         #endregion
 
         #region Post Methods
@@ -57,6 +67,17 @@ namespace LaundryIroningAPI.Ironing
            [FromBody, SwaggerParameter("Model containing the details of the new order to create", Required = true)] IroningOrder order)
         {
             return Ok(await _ironingBusiness.AddIroningOrderAsync(order));
+        }
+
+        [HttpPost]
+        [ActionName("UpdateOrderAssignment")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateOrderAssignmentAsync(
+            [SwaggerParameter("Id for mapping the orders", Required = true)] Guid agentId,
+           [FromBody, SwaggerParameter("list containing the details of the orders to update", Required = true)] List<string> orderIds)
+        {
+            return Ok(await _ironingBusiness.UpdateOrderAssignemnt(agentId,orderIds));
         }
 
         #endregion

@@ -14,8 +14,11 @@ namespace LaundryIroningEntity.Entity
         public int NoOfCloths { get; set; }
         public Guid OrderBy { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int? ClothsTypeId { get; set; }
-        public bool? IsDelivered { get; set; }
         public string TotalCost { get; set; }
+        public string OrderStatus { get; set; }
+        public DateTime? PickedAt { get; set; }
+        public DateTime? ProcessedAt { get; set; }
+        public DateTime? DeliveredAt { get; set; }
+        public string PaymentMode { get; set; }
     }
 }
