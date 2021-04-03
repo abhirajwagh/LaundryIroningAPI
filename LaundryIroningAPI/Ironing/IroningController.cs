@@ -55,6 +55,31 @@ namespace LaundryIroningAPI.Ironing
         {
             return Ok(await _ironingBusiness.GetIroningOrdersForAdminAsync());
         }
+
+        [HttpGet]
+        [ActionName("GetAllNewOrdersForAgent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllNewOrdersForAgentAsync(Guid? agentId)
+        {
+            return Ok(await _ironingBusiness.GetAllNewOrdersForAgentAsync(agentId));
+        }
+
+        [HttpGet]
+        [ActionName("GetAllProcessedOrdersForAgent")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllProcessedOrdersForAgentAsync(Guid? agentId)
+        {
+            return Ok(await _ironingBusiness.GetAllProcessedOrdersForAgentAsync(agentId));
+        }
+
+        [HttpGet]
+        [ActionName("GetAllPickedOrdersForOperator")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetAllPickedOrdersForOperatorAsync(Guid? operatorId)
+        {
+            return Ok(await _ironingBusiness.GetAllPickedOrdersForOperatorAsync(operatorId));
+        }
+
         #endregion
 
         #region Post Methods

@@ -17,7 +17,9 @@ namespace LaundryIroningContract.Business
         Task<IroningOrderViewModel> GetIroningOrderAsync(int orderId);
         Task<int> AddIroningOrderAsync(IroningOrder order);
         Task<List<GetIroningOrdersForAdmin>> GetIroningOrdersForAdminAsync();
-
         Task<int> UpdateOrderAssignemnt(Guid agentId, List<string> OrderId);
+        Task<List<GetAllOrdersForAgentOperator>> GetAllNewOrdersForAgentAsync(Guid? agentId);
+        Task<List<GetAllOrdersForAgentOperator>> GetAllProcessedOrdersForAgentAsync(Guid? agentId);
+        Task<List<GetAllOrdersForAgentOperator>> GetAllPickedOrdersForOperatorAsync(Guid? operatorId);
     }
 }

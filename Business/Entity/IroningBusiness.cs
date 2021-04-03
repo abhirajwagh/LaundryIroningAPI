@@ -62,6 +62,20 @@ namespace LaundryIroningBusiness.Entity
             return await _ironingRepository.GetIroningOrdersForAdminAsync();
         }
 
+        public async Task<List<GetAllOrdersForAgentOperator>> GetAllNewOrdersForAgentAsync(Guid? agentId)
+        {
+            return await _ironingRepository.GetAllNewOrdersForAgentAsync(agentId);
+        }
+
+        public async Task<List<GetAllOrdersForAgentOperator>> GetAllProcessedOrdersForAgentAsync(Guid? agentId)
+        {
+            return await _ironingRepository.GetAllProcessedOrdersForAgentAsync(agentId);
+        }
+        public async Task<List<GetAllOrdersForAgentOperator>> GetAllPickedOrdersForOperatorAsync(Guid? operatorId)
+        {
+            return await _ironingRepository.GetAllPickedOrdersForOperatorAsync(operatorId);
+        }
+
         #endregion
 
         #region Add Method
