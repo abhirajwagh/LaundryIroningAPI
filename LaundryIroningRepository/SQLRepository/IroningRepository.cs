@@ -45,6 +45,33 @@ namespace LaundryIroningRepository.SQLRepository
         {
             return (await _executerStoreProc.ExecuteProcAsync<GetIroningOrdersForAdmin>(ProcedureConstants.GetIroningOrdersForAdmin));
         }
+
+        public async Task<List<GetAllOrdersForAgentOperator>> GetAllNewOrdersForAgentAsync(Guid? agentId)
+        {
+            List<Parameters> param = new List<Parameters>()
+            {
+                new Parameters("AgentId", agentId)
+            };
+            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllNewOrdersForAgent,param));
+        }
+
+        public async Task<List<GetAllOrdersForAgentOperator>> GetAllProcessedOrdersForAgentAsync(Guid? agentId)
+        {
+            List<Parameters> param = new List<Parameters>()
+            {
+                new Parameters("AgentId", agentId)
+            };
+            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllProcessedOrdersForAgent));
+        }
+        public async Task<List<GetAllOrdersForAgentOperator>> GetAllPickedOrdersForOperatorAsync(Guid? operatorId)
+        {
+            List<Parameters> param = new List<Parameters>()
+            {
+                new Parameters("OperatorId", operatorId)
+            };
+            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllPickedOrdersForOperator));
+        }
+
         #endregion
     }
 }

@@ -62,6 +62,10 @@ namespace LaundryIroningCommon
         public const string GetIroningOrdersForAdmin = "GetIroningOrdersForAdmin";
         public const string GetLaundryOrdersForAdmin = "GetLaundryOrdersForAdmin";
         public const string GetIroningLaundryOrdersForAdmin = "GetIroningLaundryOrdersForAdmin";
+        public const string GetAllNewOrdersForAgent = "GetAllNewOrdersForAgent";
+        public const string GetAllProcessedOrdersForAgent = "GetAllProcessedOrdersForAgent";
+        public const string GetAllPickedOrdersForOperator = "GetAllPickedOrdersForOperator";
+
     }
 
     public class UrlConstants
