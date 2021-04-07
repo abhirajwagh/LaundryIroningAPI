@@ -8,6 +8,7 @@ namespace LaundryIroningEntity.Entity
     public class IroningOrder
     {
         public int Id { get; set; }
+        
         public DateTime PickUpDate { get; set; }
         public string PickUpTimeSlot { get; set; }
         public string PickUpAddress { get; set; }

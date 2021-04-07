@@ -65,6 +65,8 @@ namespace LaundryIroningCommon
         public const string GetAllNewOrdersForAgent = "GetAllNewOrdersForAgent";
         public const string GetAllProcessedOrdersForAgent = "GetAllProcessedOrdersForAgent";
         public const string GetAllPickedOrdersForOperator = "GetAllPickedOrdersForOperator";
+        public const string UpdateOrderStatusByAgentOperator = "UpdateOrderStatusByAgentOperator";
+        public const string GetAgentOrderAssignmentCount = "GetAgentOrderAssignmentCount";
 
     }
 
@@ -83,6 +85,11 @@ namespace LaundryIroningCommon
         public const string SuperAdmin = "SuperAdmin";
     }
 
-
+    public class OrderTypesConstants
+    {
+        public const string Ironing = "Ironing";
+        public const string Laundry = "Laundry";
+        public const string IroningLaundry = "IroningLaundry";
+    }
 
 }

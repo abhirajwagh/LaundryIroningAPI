@@ -61,7 +61,7 @@ namespace LaundryIroningRepository.SQLRepository
             {
                 new Parameters("AgentId", agentId)
             };
-            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllProcessedOrdersForAgent));
+            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllProcessedOrdersForAgent, param));
         }
         public async Task<List<GetAllOrdersForAgentOperator>> GetAllPickedOrdersForOperatorAsync(Guid? operatorId)
         {
@@ -69,9 +69,24 @@ namespace LaundryIroningRepository.SQLRepository
             {
                 new Parameters("OperatorId", operatorId)
             };
-            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllPickedOrdersForOperator));
+            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllPickedOrdersForOperator, param));
         }
 
+        public async Task<int> UpdateOrderStatusAsync(string orderNo, string orderType, string orderStatus)
+        {
+            List<Parameters> param = new List<Parameters>()
+            {
+                new Parameters("orderNo", orderNo),
+                new Parameters("orderType", orderType),
+                new Parameters("orderStatus", orderStatus)
+            };
+            return (await _executerStoreProc.ExceuteNonQueryAsync(ProcedureConstants.UpdateOrderStatusByAgentOperator, param));
+        }
+
+        public async Task<List<GetAgentOrderAssignmentCount>> GetAgentOrdersAssignmentCountAsync()
+        {
+            return (await _executerStoreProc.ExecuteProcAsync<GetAgentOrderAssignmentCount>(ProcedureConstants.GetAgentOrderAssignmentCount));
+        }
         #endregion
     }
 }
