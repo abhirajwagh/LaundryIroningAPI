@@ -19,14 +19,21 @@ namespace LaundryIroningBusiness.Entity
         #region Private Variable
 
         private readonly IIroningLaundryRepository _ironingLaundryRepository;
+        private readonly ILaundryRepository _laundryRepository;
+        private readonly IIroningRepository _ironingRepository;
+        private readonly IOrderAgentMappingRepository _orderAgentMappingRepository;
 
         #endregion
 
         #region Constructor
 
-        public IroningLaundryBusiness(IIroningLaundryRepository ironingLaundryRepository)
+        public IroningLaundryBusiness(IIroningLaundryRepository ironingLaundryRepository, ILaundryRepository laundryRepository,
+            IIroningRepository ironingRepository, IOrderAgentMappingRepository orderAgentMappingRepository)
         {
             _ironingLaundryRepository = ironingLaundryRepository;
+            _laundryRepository = laundryRepository;
+            _ironingRepository = ironingRepository;
+            _orderAgentMappingRepository = orderAgentMappingRepository;
         }
 
         public IUnitOfWork Uow
@@ -37,6 +44,9 @@ namespace LaundryIroningBusiness.Entity
             }
             set
             {
+                _ironingRepository.Uow = value;
+                _orderAgentMappingRepository.Uow = value;
+                _laundryRepository.Uow = value;
                 _ironingLaundryRepository.Uow = value;
             }
         }
@@ -75,9 +85,20 @@ namespace LaundryIroningBusiness.Entity
                 return (int)StatusCode.ExpectationFailed;
 
             order.CreatedAt = DateTime.UtcNow;
-
             await _ironingLaundryRepository.AddAsync(order);
             await _ironingLaundryRepository.Uow.SaveChangesAsync();
+
+            var agentAssignmentCountList = (await _ironingRepository.GetAgentOrdersAssignmentCountAsync()).ToList();
+            var addedOrder = await GetIroningLaundryOrderAsync(order.Id);
+            if (agentAssignmentCountList.Count() > 0 && addedOrder != null)
+            {
+                var orderMapping = new OrderAgentMapping();
+                orderMapping.OrderMappingId = Guid.NewGuid();
+                orderMapping.AgentId = agentAssignmentCountList[0].AgentId;
+                orderMapping.OrderId = addedOrder.OrderId;
+                await _orderAgentMappingRepository.AddAsync(orderMapping);
+                await _orderAgentMappingRepository.Uow.SaveChangesAsync();
+            }
             return order.Id;
         }
 

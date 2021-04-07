@@ -105,6 +105,17 @@ namespace LaundryIroningAPI.Ironing
             return Ok(await _ironingBusiness.UpdateOrderAssignemnt(agentId,orderIds));
         }
 
+        [HttpPost]
+        [ActionName("UpdateOrderStatus")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateOrderStatusAsync(
+            [SwaggerParameter("Id for mapping the orders", Required = true)] string orderNo,
+           [SwaggerParameter("Id for mapping the orders", Required = true)] string orderType,
+           [SwaggerParameter("Id for mapping the orders", Required = true)] string orderStatus)
+        {
+            return Ok(await _ironingBusiness.UpdateOrderStatusAsync(orderNo, orderType, orderStatus));
+        }
         #endregion
     }
 }

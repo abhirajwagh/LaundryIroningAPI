@@ -20,14 +20,19 @@ namespace LaundryIroningBusiness.Entity
 
         private readonly IIroningRepository _ironingRepository;
         private readonly IOrderAgentMappingRepository _orderAgentMappingRepository;
+        private readonly ILaundryRepository _laundryRepository;
+        private readonly IIroningLaundryRepository _ironingLaundryRepository;
         #endregion
 
         #region Constructor
 
-        public IroningBusiness(IIroningRepository ironingRepository, IOrderAgentMappingRepository orderAgentMappingRepository)
+        public IroningBusiness(IIroningRepository ironingRepository, IOrderAgentMappingRepository orderAgentMappingRepository,
+            ILaundryRepository laundryRepository, IIroningLaundryRepository ironingLaundryRepository)
         {
             _ironingRepository = ironingRepository;
             _orderAgentMappingRepository = orderAgentMappingRepository;
+            _laundryRepository = laundryRepository;
+            _ironingLaundryRepository = ironingLaundryRepository;
         }
 
         public IUnitOfWork Uow
@@ -40,6 +45,8 @@ namespace LaundryIroningBusiness.Entity
             {
                 _ironingRepository.Uow = value;
                 _orderAgentMappingRepository.Uow = value;
+                _laundryRepository.Uow = value;
+                _ironingLaundryRepository.Uow = value;
             }
         }
 
@@ -91,10 +98,23 @@ namespace LaundryIroningBusiness.Entity
                 || order.PickUpAddress == null || order.PaymentMode == null || order.OrderStatus == null)
                 return (int)StatusCode.ExpectationFailed;
 
-            order.CreatedAt = DateTime.UtcNow;
 
+            order.CreatedAt = DateTime.UtcNow;
             await _ironingRepository.AddAsync(order);
             await _ironingRepository.Uow.SaveChangesAsync();
+
+            var agentAssignmentCountList = (await _ironingRepository.GetAgentOrdersAssignmentCountAsync()).ToList();
+            var addedOrder = await GetIroningOrderAsync(order.Id);
+            if (agentAssignmentCountList.Count() > 0 && addedOrder != null)
+            {
+                var orderMapping = new OrderAgentMapping();
+                orderMapping.OrderMappingId = Guid.NewGuid();
+                orderMapping.AgentId = agentAssignmentCountList[0].AgentId;
+                orderMapping.OrderId = addedOrder.OrderId;
+                await _orderAgentMappingRepository.AddAsync(orderMapping);
+                await _orderAgentMappingRepository.Uow.SaveChangesAsync();
+            }
+
             return order.Id;
         }
 
@@ -123,6 +143,11 @@ namespace LaundryIroningBusiness.Entity
             
 
             return (int)StatusCode.SuccessfulStatusCode;
+        }
+
+        public async Task<int> UpdateOrderStatusAsync(string orderNo,string orderType,string orderStatus)
+        {
+            return await _ironingRepository.UpdateOrderStatusAsync(orderNo, orderType, orderStatus);
         }
 
         #endregion

@@ -15,6 +15,7 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public string PaymentMode { get; set; }
         public string TotalCost { get; set; }
         public string OrderStatus { get; set; }
+        public string OrderType { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? PickedAt { get; set; }
         public DateTime? ProcessedAt { get; set; }
