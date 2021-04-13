@@ -18,5 +18,6 @@ namespace LaundryIroningEntity.ViewModels
         public int? ClothsTypeId { get; set; }
         public bool? IsDelivered { get; set; }
         public string TotalCost { get; set; }
+        public string PaymentMode { get; set; }
     }
 }
