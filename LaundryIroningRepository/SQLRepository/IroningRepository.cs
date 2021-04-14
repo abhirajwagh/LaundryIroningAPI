@@ -72,13 +72,14 @@ namespace LaundryIroningRepository.SQLRepository
             return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForAgentOperator>(ProcedureConstants.GetAllPickedOrdersForOperator, param));
         }
 
-        public async Task<int> UpdateOrderStatusAsync(string orderNo, string orderType, string orderStatus)
+        public async Task<int> UpdateOrderStatusAsync(UpdateOrderStatusViewModel updateOrderStatusViewModel)
         {
             List<Parameters> param = new List<Parameters>()
             {
-                new Parameters("orderNo", orderNo),
-                new Parameters("orderType", orderType),
-                new Parameters("orderStatus", orderStatus)
+                new Parameters("orderNo", updateOrderStatusViewModel.OrderNumber),
+                new Parameters("orderType", updateOrderStatusViewModel.OrderType),
+                new Parameters("orderStatus", updateOrderStatusViewModel.OrderStatus),
+                new Parameters("confirmBy", updateOrderStatusViewModel.ConfirmBy),
             };
             return (await _executerStoreProc.ExceuteNonQueryAsync(ProcedureConstants.UpdateOrderStatusByAgentOperator, param));
         }
