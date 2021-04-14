@@ -27,5 +27,8 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public string CustomerUserName { get; set; }
         public string CustomerName { get; set; }
         public string CustomerMobileNo { get; set; }
+        public string PickedBy { get; set; }
+        public string ProcessedBy { get; set; }
+        public string DeliveredBy { get; set; }
     }
 }

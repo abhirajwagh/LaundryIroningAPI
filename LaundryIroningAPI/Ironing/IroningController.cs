@@ -9,6 +9,7 @@ using LaundryIroningEntity.Entity;
 using LaundryIroningCommon;
 using System;
 using System.Collections.Generic;
+using LaundryIroningEntity.ViewModels;
 
 namespace LaundryIroningAPI.Ironing
 {
@@ -110,11 +111,9 @@ namespace LaundryIroningAPI.Ironing
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> UpdateOrderStatusAsync(
-            [SwaggerParameter("Id for mapping the orders", Required = true)] string orderNo,
-           [SwaggerParameter("Id for mapping the orders", Required = true)] string orderType,
-           [SwaggerParameter("Id for mapping the orders", Required = true)] string orderStatus)
+            [FromBody,SwaggerParameter("orderDetailsforUpdateStatus", Required = true)] UpdateOrderStatusViewModel updateOrderStatusViewModel)
         {
-            return Ok(await _ironingBusiness.UpdateOrderStatusAsync(orderNo, orderType, orderStatus));
+            return Ok(await _ironingBusiness.UpdateOrderStatusAsync(updateOrderStatusViewModel));
         }
         #endregion
     }

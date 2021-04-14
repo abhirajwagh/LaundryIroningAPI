@@ -22,7 +22,7 @@ namespace LaundryIroningContract.Repository
         Task<List<GetAllOrdersForAgentOperator>> GetAllNewOrdersForAgentAsync(Guid? agentId);
         Task<List<GetAllOrdersForAgentOperator>> GetAllProcessedOrdersForAgentAsync(Guid? agentId);
         Task<List<GetAllOrdersForAgentOperator>> GetAllPickedOrdersForOperatorAsync(Guid? operatorId);
-        Task<int> UpdateOrderStatusAsync(string orderNo, string orderType, string orderStatus);
+        Task<int> UpdateOrderStatusAsync(UpdateOrderStatusViewModel updateOrderStatusViewModel);
         Task<List<GetAgentOrderAssignmentCount>> GetAgentOrdersAssignmentCountAsync();
     }
 }

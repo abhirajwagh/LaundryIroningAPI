@@ -145,9 +145,9 @@ namespace LaundryIroningBusiness.Entity
             return (int)StatusCode.SuccessfulStatusCode;
         }
 
-        public async Task<int> UpdateOrderStatusAsync(string orderNo,string orderType,string orderStatus)
+        public async Task<int> UpdateOrderStatusAsync(UpdateOrderStatusViewModel updateOrderStatusViewModel)
         {
-            return await _ironingRepository.UpdateOrderStatusAsync(orderNo, orderType, orderStatus);
+            return await _ironingRepository.UpdateOrderStatusAsync(updateOrderStatusViewModel);
         }
 
         #endregion
