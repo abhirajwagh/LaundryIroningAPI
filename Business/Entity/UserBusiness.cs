@@ -4,6 +4,7 @@ using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using LaundryIroningHelper.Enum;
 using System;
 using System.Collections.Generic;
@@ -81,6 +82,11 @@ namespace LaundryIroningBusiness.Entity
                 agentList.Add(agentModel);
             }
             return agentList;
+        }
+
+        public async Task<List<GetAllOrdersForCustomer>> GetAllOrdersForCustomerAsync(Guid customerId, int noOfDays)
+        {
+            return await _userRepository.GetAllOrdersForCustomerAsync(customerId,noOfDays);
         }
         /// <summary>
         /// get 
