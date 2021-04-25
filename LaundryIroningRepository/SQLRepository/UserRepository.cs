@@ -4,6 +4,7 @@ using LaundryIroningContract.Repository;
 using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using LaundryIroningHelper;
 using LaundryIroningRepository.CommonRepository;
 using Newtonsoft.Json;
@@ -39,6 +40,16 @@ namespace LaundryIroningRepository.SQLRepository
                 new Parameters("UserType",userTypeJson)
             };
             return await _executerStoreProc.ExecuteProcAsync<AdminAgentUserViewModel>(ProcedureConstants.GetUserByUserType, param);
+        }
+
+        public async Task<List<GetAllOrdersForCustomer>> GetAllOrdersForCustomerAsync(Guid customerId, int noOfDays)
+        {
+            List<Parameters> param = new List<Parameters>()
+            {
+                new Parameters("customerId", customerId),
+                new Parameters("noOfDays", noOfDays)
+            };
+            return (await _executerStoreProc.ExecuteProcAsync<GetAllOrdersForCustomer>(ProcedureConstants.GetAllOrdersForCustomer, param));
         }
         #endregion
     }

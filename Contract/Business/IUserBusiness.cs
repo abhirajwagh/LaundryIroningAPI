@@ -1,6 +1,7 @@
 ﻿using LaundryIroningEntity.Contract;
 using LaundryIroningEntity.Entity;
 using LaundryIroningEntity.ViewModels;
+using LaundryIroningEntity.ViewModels.StoredProcedureModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -20,5 +21,6 @@ namespace LaundryIroningContract.Business
         Task<int> AddAdminAgentUsersAsync(AdminAgentUserViewModel user);
         Task<int> UpdateAdminAgentUsersAsync(AdminAgentUserViewModel user);
         Task<int> DeleteAdminAgentUsers(Guid userId);
+        Task<List<GetAllOrdersForCustomer>> GetAllOrdersForCustomerAsync(Guid customerId, int noOfDays);
     }
 }

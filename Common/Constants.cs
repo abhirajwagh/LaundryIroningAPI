@@ -67,6 +67,7 @@ namespace LaundryIroningCommon
         public const string GetAllPickedOrdersForOperator = "GetAllPickedOrdersForOperator";
         public const string UpdateOrderStatusByAgentOperator = "UpdateOrderStatusByAgentOperator";
         public const string GetAgentOrderAssignmentCount = "GetAgentOrderAssignmentCount";
+        public const string GetAllOrdersForCustomer = "GetAllOrdersForCustomer";
 
     }
 
