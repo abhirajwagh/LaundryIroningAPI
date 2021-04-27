@@ -18,7 +18,6 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public DateTime? PickedAt { get; set; }
         public DateTime? ProcessedAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
-        public string PaymentMode { get; set; }
         public Guid? AgentId { get; set; }
         public string AgentUserName { get; set; }
         public string AgentName { get; set; }
