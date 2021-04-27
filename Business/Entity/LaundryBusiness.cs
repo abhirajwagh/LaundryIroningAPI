@@ -81,7 +81,7 @@ namespace LaundryIroningBusiness.Entity
         public async Task<int> AddLaundryOrderAsync(LaundryOrder order)
         {
             if (order.NoOfKgs == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null
-                || order.PaymentMode == null || order.OrderStatus == null)
+                || order.OrderStatus == null)
                 return (int)StatusCode.ExpectationFailed;
 
             order.CreatedAt = DateTime.UtcNow;

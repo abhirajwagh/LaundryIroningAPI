@@ -12,7 +12,6 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public string PickUpAddress { get; set; }
         public int? NoOfCloths { get; set; }
         public int? NoOfKgs { get; set; }
-        public string PaymentMode { get; set; }
         public string TotalCost { get; set; }
         public string OrderStatus { get; set; }
         public string OrderType { get; set; }

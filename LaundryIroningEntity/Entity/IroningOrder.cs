@@ -8,7 +8,6 @@ namespace LaundryIroningEntity.Entity
     public class IroningOrder
     {
         public int Id { get; set; }
-        
         public DateTime PickUpDate { get; set; }
         public string PickUpTimeSlot { get; set; }
         public string PickUpAddress { get; set; }
@@ -20,6 +19,5 @@ namespace LaundryIroningEntity.Entity
         public DateTime? PickedAt { get; set; }
         public DateTime? ProcessedAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
-        public string PaymentMode { get; set; }
     }
 }
