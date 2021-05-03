@@ -20,6 +20,8 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public DateTime? ProcessedAt { get; set; }
         public string CustomerName { get; set; }
         public string CustomerMobileNo { get; set; }
+        public string AgentComment { get; set; }
+        public string OperatorComment { get; set; }
 
     }
 }

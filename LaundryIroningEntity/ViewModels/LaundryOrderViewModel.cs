@@ -17,5 +17,7 @@ namespace LaundryIroningEntity.ViewModels
         public int? ClothsTypeId { get; set; }
         public bool? IsDelivered { get; set; }
         public string TotalCost { get; set; }
+        public string AgentComment { get; set; }
+        public string OperatorComment { get; set; }
     }
 }

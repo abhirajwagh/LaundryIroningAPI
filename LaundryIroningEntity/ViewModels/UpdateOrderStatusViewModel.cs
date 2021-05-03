@@ -10,5 +10,7 @@ namespace LaundryIroningEntity.ViewModels
         public string OrderType { get; set; }
         public string OrderStatus { get; set; }
         public Guid ConfirmBy { get; set; }
+        public string Agentcomment { get; set; }
+        public string OperatorComment { get; set; }
     }
 }
