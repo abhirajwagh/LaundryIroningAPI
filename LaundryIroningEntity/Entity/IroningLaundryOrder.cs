@@ -19,5 +19,9 @@ namespace LaundryIroningEntity.Entity
         public DateTime? PickedAt { get; set; }
         public DateTime? ProcessedAt { get; set; }
         public DateTime? DeliveredAt { get; set; }
+        public string AgentComment { get; set; }
+        public string OperatorComment { get; set; }
+
+        
     }
 }
