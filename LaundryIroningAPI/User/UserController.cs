@@ -90,6 +90,16 @@ namespace LaundryIroningAPI.User
             return Ok(await _userBusiness.GetUserNameAsync(userName));
         }
 
+        
+        [HttpPost]
+        [ActionName("CheckSecurityAnswers")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> CheckSecurityAnswersAsync(
+            [FromBody, SwaggerParameter("Model containing the details of answer", Required = true)] SecurityAnswerModelViewModel answerModel)
+        {
+            return Ok(await _userBusiness.CheckSecurityAnswersAsync(answerModel));
+        }
+
         #endregion
 
         #region Post Methods

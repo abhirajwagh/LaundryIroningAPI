@@ -142,6 +142,28 @@ namespace LaundryIroningBusiness.Entity
            
             
         }
+
+        /// <summary>
+        /// Check the enter security answer is valid or not 
+        /// </summary>
+        /// <param name="answerModel"></param>
+        /// <returns>boolean value</returns>
+        public async Task<bool> CheckSecurityAnswersAsync(SecurityAnswerModelViewModel answerModel)
+        {
+            var users = await _userRepository.SelectAsync(u =>  u.UserName == answerModel.UserName && 
+                                                                u.MobileNo == answerModel.MobileNo && 
+                                                                u.SecurityAnswerOne == answerModel.SecurityAnswerOne && 
+                                                                u.SecurityAnswerTwo == answerModel.SecurityAnswerTwo);
+            if (users.Any())
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         #endregion
 
         #region Add Method

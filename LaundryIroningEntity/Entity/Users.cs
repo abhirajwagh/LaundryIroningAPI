@@ -18,5 +18,7 @@ namespace LaundryIroningEntity.Entity
         public DateTime? DateOfBirth { get; set; }
         public string AadharNo { get; set; }
         public string DrivingLicenceNo { get; set; }
+        public string SecurityAnswerOne { get; set; }
+        public string SecurityAnswerTwo { get; set; }
     }
 }
