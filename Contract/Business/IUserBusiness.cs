@@ -22,5 +22,6 @@ namespace LaundryIroningContract.Business
         Task<int> UpdateAdminAgentUsersAsync(AdminAgentUserViewModel user);
         Task<int> DeleteAdminAgentUsers(Guid userId);
         Task<List<GetAllOrdersForCustomer>> GetAllOrdersForCustomerAsync(Guid customerId, int noOfDays);
+        Task<bool> CheckSecurityAnswersAsync(SecurityAnswerModelViewModel answerModel);
     }
 }
