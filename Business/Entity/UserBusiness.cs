@@ -150,10 +150,20 @@ namespace LaundryIroningBusiness.Entity
         /// <returns>boolean value</returns>
         public async Task<bool> CheckSecurityAnswersAsync(SecurityAnswerModelViewModel answerModel)
         {
-            var users = await _userRepository.SelectAsync(u =>  u.UserName == answerModel.UserName && 
-                                                                u.MobileNo == answerModel.MobileNo && 
-                                                                u.SecurityAnswerOne == answerModel.SecurityAnswerOne && 
+            IList<Users> users;
+            if(answerModel.UserName != null && answerModel.UserName != "")
+            {
+                users = await _userRepository.SelectAsync(u => u.UserName == answerModel.UserName &&
+                                                                u.MobileNo == answerModel.MobileNo &&
+                                                                u.SecurityAnswerOne == answerModel.SecurityAnswerOne &&
                                                                 u.SecurityAnswerTwo == answerModel.SecurityAnswerTwo);
+            } else
+            {
+                users = await _userRepository.SelectAsync(u => u.MobileNo == answerModel.MobileNo &&
+                                                                u.SecurityAnswerOne == answerModel.SecurityAnswerOne &&
+                                                                u.SecurityAnswerTwo == answerModel.SecurityAnswerTwo);
+            }
+            
             if (users.Any())
             {
                 return true;
@@ -194,6 +204,32 @@ namespace LaundryIroningBusiness.Entity
             return (int)StatusCode.SuccessfulStatusCode;
         }
 
+
+        /// <summary>
+        /// Update the user password
+        /// </summary>
+        /// <param name="newPass"></param>
+        /// <param name="conPass"></param>
+        /// <param name="mob"></param>
+        /// <returns></returns>
+        public async Task<int> UpdateUserPasswordAsync(string newPass, string conPass, string mob)
+        {
+            if (string.IsNullOrEmpty(newPass) || string.IsNullOrEmpty(conPass) || string.IsNullOrEmpty(mob))
+                return (int)StatusCode.ExpectationFailed;
+            var existingUser = await _userRepository.SelectAsync(u => u.MobileNo == mob);
+            if (existingUser.Any() && newPass == conPass)
+            {
+                existingUser[0].Password = Convert.ToString(EncryptionandDecryption.Encrypt(newPass));
+                await _userRepository.UpdateAsync(existingUser[0]);
+                await _userRepository.Uow.SaveChangesAsync();
+
+                return (int)StatusCode.SuccessfulStatusCode;
+            }
+            else
+            {
+                return (int)StatusCode.NoContent;
+            }
+        }
         /// <summary>
         /// add the admin or agent user 
         /// </summary>
@@ -303,6 +339,8 @@ namespace LaundryIroningBusiness.Entity
                 return (int)StatusCode.NoContent;
             }
         }
+
+      
         #endregion
     }
 }

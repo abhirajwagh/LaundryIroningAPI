@@ -167,6 +167,16 @@ namespace LaundryIroningAPI.User
             int result = await _userBusiness.UpdateAdminAgentUsersAsync(users);
             return commonMethods.GetResultMessages(result, MethodType.Update);
         }
+
+        [HttpPost]
+        [ActionName("UpdateUserPassword")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateUserPasswordAsync(string newPass ,string conPass,string mob)
+        {
+            int result = await _userBusiness.UpdateUserPasswordAsync(newPass, conPass, mob);
+            return commonMethods.GetResultMessages(result, MethodType.Update);
+        }
         #endregion
 
         #region "Delete Methods"
