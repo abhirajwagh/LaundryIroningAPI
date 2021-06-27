@@ -23,5 +23,6 @@ namespace LaundryIroningContract.Business
         Task<int> DeleteAdminAgentUsers(Guid userId);
         Task<List<GetAllOrdersForCustomer>> GetAllOrdersForCustomerAsync(Guid customerId, int noOfDays);
         Task<bool> CheckSecurityAnswersAsync(SecurityAnswerModelViewModel answerModel);
+        Task<int> UpdateUserPasswordAsync(string newPass, string conPass,string mob);
     }
 }
