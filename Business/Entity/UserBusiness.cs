@@ -51,6 +51,42 @@ namespace LaundryIroningBusiness.Entity
         /// </summary>
         /// <returns></returns>
         #region Get Method
+
+
+        /// <summary>
+        /// Get the user details by user id 
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns>user model</returns>
+        public async Task<Users> GetUserByIdAsync(Guid customerId)
+        {
+            if (customerId == null || customerId == Guid.Empty)
+                return null;
+
+            var user = await _userRepository.SelectAsync(u => u.UserId == customerId);
+            if (user.Any())
+            {
+                Users newUser = new Users();
+                newUser.UserId = user[0].UserId;
+                newUser.UserName = user[0].UserName;
+                newUser.Password = Convert.ToString(EncryptionandDecryption.Decrypt(user[0].Password));
+                newUser.MobileNo = user[0].MobileNo;
+                newUser.Address = user[0].Address;
+                newUser.Email = user[0].Email;
+                newUser.Name = user[0].Name;
+                newUser.SecurityAnswerOne = user[0].SecurityAnswerOne;
+                newUser.SecurityAnswerTwo = user[0].SecurityAnswerTwo;
+                newUser.PromoCode = user[0].PromoCode;
+                newUser.PromoCodePoints = user[0].PromoCodePoints;
+
+                return newUser;
+            } else
+            {
+                return null;
+            }
+            
+        }
+
         public async Task<List<Users>> GetUsersAsync()
         {
             var unitsList = await _userRepository.SelectAsync();
@@ -317,6 +353,45 @@ namespace LaundryIroningBusiness.Entity
             }
            
         }
+
+        /// <summary>
+        /// Update the customer profile
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        public async Task<int> UpdateCustomerProfileAsync(CustomerProfileViewModel user)
+        {
+            if (string.IsNullOrEmpty(user.UserName) || user.Password == null || user.Name == null || user.MobileNo == null)
+                return (int)StatusCode.ExpectationFailed;
+
+            var existingTemplate = await _userRepository.SelectAsync(u => u.UserId == Guid.Parse(user.UserId));
+            if (existingTemplate.Any())
+            {
+                var existingMobile = await _userRepository.SelectAsync(u => u.MobileNo == user.MobileNo && u.UserId != Guid.Parse(user.UserId));
+                if (existingMobile.Any())
+                    return (int)StatusCode.ConflictStatusCode;
+
+                existingTemplate[0].Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
+                existingTemplate[0].Name = user.Name;
+                existingTemplate[0].Address = user.Address;
+                existingTemplate[0].MobileNo = user.MobileNo;
+                existingTemplate[0].Email = user.EmailId;
+                existingTemplate[0].SecurityAnswerOne = user.SecurityAnsOne;
+                existingTemplate[0].SecurityAnswerTwo = user.SecurityAnsTwo;
+                existingTemplate[0].CreatedAt = DateTime.UtcNow;
+
+                await _userRepository.UpdateAsync(existingTemplate[0]);
+                await _userRepository.Uow.SaveChangesAsync();
+
+                return (int)StatusCode.SuccessfulStatusCode;
+
+            }
+            else
+            {
+                return (int)StatusCode.NoContent;
+            }
+
+        }
         #endregion
 
         #region Delete Methods
@@ -340,7 +415,9 @@ namespace LaundryIroningBusiness.Entity
             }
         }
 
-      
+        
+
+
         #endregion
     }
 }
