@@ -20,5 +20,7 @@ namespace LaundryIroningEntity.Entity
         public string DrivingLicenceNo { get; set; }
         public string SecurityAnswerOne { get; set; }
         public string SecurityAnswerTwo { get; set; }
+        public string PromoCode { get; set; }
+        public string PromoCodePoints { get; set; }
     }
 }

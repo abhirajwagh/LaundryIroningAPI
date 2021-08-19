@@ -24,5 +24,7 @@ namespace LaundryIroningContract.Business
         Task<List<GetAllOrdersForCustomer>> GetAllOrdersForCustomerAsync(Guid customerId, int noOfDays);
         Task<bool> CheckSecurityAnswersAsync(SecurityAnswerModelViewModel answerModel);
         Task<int> UpdateUserPasswordAsync(string newPass, string conPass,string mob);
+        Task<Users> GetUserByIdAsync(Guid customerId);
+        Task<int> UpdateCustomerProfileAsync(CustomerProfileViewModel user);
     }
 }

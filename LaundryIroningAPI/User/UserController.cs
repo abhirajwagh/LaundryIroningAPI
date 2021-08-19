@@ -34,6 +34,15 @@ namespace LaundryIroningAPI.User
         #endregion
 
         #region Get Methods 
+
+        [HttpGet]
+        [ActionName("GetUserDetailsById")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetUserByIdAsync(Guid customerId)
+        {
+            return Ok(await _userBusiness.GetUserByIdAsync(customerId));
+        }
+
         [HttpGet]
         [ActionName("GetAllUsers")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -175,6 +184,23 @@ namespace LaundryIroningAPI.User
         public async Task<IActionResult> UpdateUserPasswordAsync(string newPass ,string conPass,string mob)
         {
             int result = await _userBusiness.UpdateUserPasswordAsync(newPass, conPass, mob);
+            return commonMethods.GetResultMessages(result, MethodType.Update);
+        }
+
+
+        /// <summary>
+        /// Update the customer profile
+        /// </summary>
+        /// <param name="users"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [ActionName("UpdateCustomerProfile")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> UpdateCustomerProfileAsync(
+            [FromBody, SwaggerParameter("Model containing the details of the User to update", Required = true)] CustomerProfileViewModel users)
+        {
+            int result = await _userBusiness.UpdateCustomerProfileAsync(users);
             return commonMethods.GetResultMessages(result, MethodType.Update);
         }
         #endregion
