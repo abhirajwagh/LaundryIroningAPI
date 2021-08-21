@@ -80,7 +80,7 @@ namespace LaundryIroningBusiness.Entity
         /// <returns></returns>
         public async Task<int> AddIroningLaundryOrderAsync(IroningLaundryOrder order)
         {
-            if (order.NoOfKgs == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null
+            if (order.NoOfCloths == 0 || order.PickUpDate == null || order.PickUpTimeSlot == null || order.PickUpAddress == null
                 || order.OrderStatus == null)
                 return (int)StatusCode.ExpectationFailed;
 

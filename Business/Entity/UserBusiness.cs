@@ -154,7 +154,16 @@ namespace LaundryIroningBusiness.Entity
                 if (string.IsNullOrEmpty(login.UserName) || login.Password == null)
                     return new Users();
 
-                var user = await _userRepository.SelectAsync(u => u.UserName == login.UserName);
+                decimal result = 0;
+                var user = new List<Users>();
+                var isMobileNumber = decimal.TryParse(login.UserName, out result);
+                if (isMobileNumber)
+                {
+                    user = (await _userRepository.SelectAsync(u => u.MobileNo == login.UserName)).ToList();
+                } else
+                {
+                    user = (await _userRepository.SelectAsync(u => u.UserName == login.UserName)).ToList();
+                }
                 var pasword = EncryptionandDecryption.Decrypt(user[0].Password);
                 if (user.Count() > 0)
                 {
