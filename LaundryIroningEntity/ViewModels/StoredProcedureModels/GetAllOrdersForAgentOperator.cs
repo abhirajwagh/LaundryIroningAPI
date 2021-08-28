@@ -21,6 +21,7 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public string CustomerMobileNo { get; set; }
         public string AgentComment { get; set; }
         public string OperatorComment { get; set; }
-
+        public string CustomerPromoCodePoints { get; set; }
+        public Guid OrderBy { get; set; }
     }
 }

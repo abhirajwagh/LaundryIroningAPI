@@ -82,6 +82,9 @@ namespace LaundryIroningRepository.SQLRepository
                 new Parameters("confirmBy", updateOrderStatusViewModel.ConfirmBy),
                 new Parameters("Agentcomment", updateOrderStatusViewModel.Agentcomment),
                 new Parameters("OperatorComment", updateOrderStatusViewModel.OperatorComment),
+                new Parameters("PromoCodePoints", updateOrderStatusViewModel.PromoCodePoints),
+                new Parameters("OrderBy", updateOrderStatusViewModel.OrderBy),
+                new Parameters("updatedCost", updateOrderStatusViewModel.updatedCost),
     };
             return (await _executerStoreProc.ExceuteNonQueryAsync(ProcedureConstants.UpdateOrderStatusByAgentOperator, param));
         }
