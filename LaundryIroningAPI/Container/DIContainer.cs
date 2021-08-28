@@ -37,6 +37,10 @@ namespace LaundryIroningAPI.Container
                 services.AddScoped<IIroningLaundryBusiness, IroningLaundryBusiness>();
                 services.AddScoped<IIroningLaundryRepository, IroningLaundryRepository>();
                 services.AddScoped<IOrderAgentMappingRepository, OrderAgentMappingRepository>();
+
+                services.AddScoped<IPromoCodesRepository, PromoCodesRepository>();
+
+                
             }
                    
         }

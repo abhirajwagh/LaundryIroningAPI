@@ -35,6 +35,8 @@ namespace LaundryIroningData.DataContext
         public virtual DbSet<IroningLaundryOrder> IroningLaundryOrder { get; set; }
 
         public virtual DbSet<OrderAgentMapping> OrderAgentMapping { get; set; }
+
+        public virtual DbSet<PromoCodes> PromoCodes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>(entity =>
@@ -71,6 +73,12 @@ namespace LaundryIroningData.DataContext
             {
                 entity.Property(e => e.OrderMappingId).HasColumnName("OrderMappingId");
                 entity.HasKey(e => e.OrderMappingId);
+            });
+
+            modelBuilder.Entity<PromoCodes>(entity =>
+            {
+                entity.Property(e => e.PromoCodeId).HasColumnName("PromoCodeId").HasDefaultValueSql("(newid())");
+                entity.HasKey(e => e.PromoCodeId);
             });
         }
 
