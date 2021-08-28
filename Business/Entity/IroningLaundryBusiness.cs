@@ -22,18 +22,20 @@ namespace LaundryIroningBusiness.Entity
         private readonly ILaundryRepository _laundryRepository;
         private readonly IIroningRepository _ironingRepository;
         private readonly IOrderAgentMappingRepository _orderAgentMappingRepository;
-
+        private readonly IPromoCodesRepository _promoCodesRepository;
         #endregion
 
         #region Constructor
 
         public IroningLaundryBusiness(IIroningLaundryRepository ironingLaundryRepository, ILaundryRepository laundryRepository,
-            IIroningRepository ironingRepository, IOrderAgentMappingRepository orderAgentMappingRepository)
+            IIroningRepository ironingRepository, IOrderAgentMappingRepository orderAgentMappingRepository,
+            IPromoCodesRepository promoCodesRepository)
         {
             _ironingLaundryRepository = ironingLaundryRepository;
             _laundryRepository = laundryRepository;
             _ironingRepository = ironingRepository;
             _orderAgentMappingRepository = orderAgentMappingRepository;
+            _promoCodesRepository = promoCodesRepository;
         }
 
         public IUnitOfWork Uow
@@ -48,6 +50,7 @@ namespace LaundryIroningBusiness.Entity
                 _orderAgentMappingRepository.Uow = value;
                 _laundryRepository.Uow = value;
                 _ironingLaundryRepository.Uow = value;
+                _promoCodesRepository.Uow = value;
             }
         }
 
@@ -69,6 +72,28 @@ namespace LaundryIroningBusiness.Entity
         {
             return await _ironingLaundryRepository.GetIroningLaundryOrdersForAdminAsync();
         }
+
+
+        /// <summary>
+        /// check the promo code is present or not
+        /// </summary>
+        /// <param name="promoCode"></param>
+        /// <returns></returns>
+        public async Task<bool> IsPromoCodeValidAsync(string promoCode)
+        {
+            if (string.IsNullOrWhiteSpace(promoCode))
+                return false;
+
+            var promoCodes = (await _promoCodesRepository.SelectAsync(x => x.PromoCode == promoCode)).ToList();
+            if (promoCodes.Any())
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
         #endregion
 
         #region Add Method
@@ -101,6 +126,8 @@ namespace LaundryIroningBusiness.Entity
             }
             return order.Id;
         }
+
+       
 
         #endregion
 

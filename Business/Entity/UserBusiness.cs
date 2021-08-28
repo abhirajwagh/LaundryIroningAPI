@@ -20,14 +20,17 @@ namespace LaundryIroningBusiness.Entity
 
         private readonly IUserRepository _userRepository;
         private readonly IUserTypesRepository _userTypesRepository;
+        private readonly IPromoCodesRepository _promoCodesRepository;
         #endregion
 
         #region Constructor
 
-        public UserBusiness(IUserRepository userRepository, IUserTypesRepository userTypesRepository)
+        public UserBusiness(IUserRepository userRepository,
+            IUserTypesRepository userTypesRepository, IPromoCodesRepository promoCodesRepository)
         {
             _userRepository = userRepository;
             _userTypesRepository = userTypesRepository;
+            _promoCodesRepository = promoCodesRepository;
         }
 
         public IUnitOfWork Uow
@@ -40,6 +43,7 @@ namespace LaundryIroningBusiness.Entity
             {
                 _userRepository.Uow = value;
                 _userTypesRepository.Uow = value;
+                _promoCodesRepository.Uow = value;
             }
         }
 
@@ -235,6 +239,7 @@ namespace LaundryIroningBusiness.Entity
 
             var existingTemplate = await _userRepository.SelectAsync(u => u.UserName == user.UserName || u.MobileNo == user.MobileNo);
             var userTypes = await _userTypesRepository.SelectAsync(u => u.UserType == UserTypesConstants.Customer);
+            var promocodes = (await _promoCodesRepository.SelectAsync(x => x.PromoCode == user.PromoCode)).ToList();
 
             if (existingTemplate.Any())
                 return (int)StatusCode.ConflictStatusCode;
@@ -242,8 +247,11 @@ namespace LaundryIroningBusiness.Entity
             user.CreatedAt = DateTime.UtcNow;
             user.UserId = Guid.NewGuid();
             user.UserTypeId = userTypes[0].UserTypeId;
+            user.PromoCodePoints = Convert.ToString(promocodes[0].PromoCodePoints);
 
             await _userRepository.AddAsync(user);
+
+            await _promoCodesRepository.DeleteAsync(promocodes[0]);
             await _userRepository.Uow.SaveChangesAsync();
 
             return (int)StatusCode.SuccessfulStatusCode;

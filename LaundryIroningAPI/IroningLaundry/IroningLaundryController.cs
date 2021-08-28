@@ -53,6 +53,14 @@ namespace LaundryIroningAPI.IroningLaundry
         {
             return Ok(await _ironingLaundryBusiness.GetIroningLaundryOrdersForAdminAsync());
         }
+
+        [HttpGet]
+        [ActionName("CheckPromoCodeValid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> IsPromoCodeValidAsync(string promoCode)
+        {
+            return Ok(await _ironingLaundryBusiness.IsPromoCodeValidAsync(promoCode));
+        }
         #endregion
 
         #region Post Methods
