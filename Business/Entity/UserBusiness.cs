@@ -239,21 +239,33 @@ namespace LaundryIroningBusiness.Entity
 
             var existingTemplate = await _userRepository.SelectAsync(u => u.UserName == user.UserName || u.MobileNo == user.MobileNo);
             var userTypes = await _userTypesRepository.SelectAsync(u => u.UserType == UserTypesConstants.Customer);
-            var promocodes = (await _promoCodesRepository.SelectAsync(x => x.PromoCode == user.PromoCode)).ToList();
+            if (string.IsNullOrWhiteSpace(user.PromoCode))
+            {
+                if (existingTemplate.Any())
+                    return (int)StatusCode.ConflictStatusCode;
+                user.Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
+                user.CreatedAt = DateTime.UtcNow;
+                user.UserId = Guid.NewGuid();
+                user.UserTypeId = userTypes[0].UserTypeId;
+                user.PromoCode = null;
+                user.PromoCodePoints = null;
 
-            if (existingTemplate.Any())
-                return (int)StatusCode.ConflictStatusCode;
-            user.Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
-            user.CreatedAt = DateTime.UtcNow;
-            user.UserId = Guid.NewGuid();
-            user.UserTypeId = userTypes[0].UserTypeId;
-            user.PromoCodePoints = Convert.ToString(promocodes[0].PromoCodePoints);
+            } else
+            {
+                var promocodes = (await _promoCodesRepository.SelectAsync(x => x.PromoCode == user.PromoCode)).ToList();
+                if (existingTemplate.Any())
+                    return (int)StatusCode.ConflictStatusCode;
+                user.Password = Convert.ToString(EncryptionandDecryption.Encrypt(user.Password));
+                user.CreatedAt = DateTime.UtcNow;
+                user.UserId = Guid.NewGuid();
+                user.UserTypeId = userTypes[0].UserTypeId;
+                user.PromoCode = Convert.ToString(promocodes[0].PromoCode);
+                user.PromoCodePoints = Convert.ToString(promocodes[0].PromoCodePoints);
+                await _promoCodesRepository.DeleteAsync(promocodes[0]);
+            }
 
             await _userRepository.AddAsync(user);
-
-            await _promoCodesRepository.DeleteAsync(promocodes[0]);
             await _userRepository.Uow.SaveChangesAsync();
-
             return (int)StatusCode.SuccessfulStatusCode;
         }
 

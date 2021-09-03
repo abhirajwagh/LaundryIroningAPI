@@ -23,5 +23,6 @@ namespace LaundryIroningEntity.ViewModels.StoredProcedureModels
         public string DeliveredBy { get; set; }
         public string AgentComment { get; set; }
         public string OperatorComment { get; set; }
+        public string PromoCodePoints { get; set; }
     }
 }

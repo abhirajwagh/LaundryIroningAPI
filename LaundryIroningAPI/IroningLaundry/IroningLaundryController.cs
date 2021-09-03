@@ -75,6 +75,16 @@ namespace LaundryIroningAPI.IroningLaundry
             return Ok(await _ironingLaundryBusiness.AddIroningLaundryOrderAsync(order));
         }
 
+
+        [HttpPost]
+        [ActionName("AddPromocodes")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> AddPromocodesAsync(int promocodeCount, int promoCodeValue)
+        {
+            return Ok(await _ironingLaundryBusiness.AddPromocodesAsync(promocodeCount, promoCodeValue));
+        }
+
         #endregion
     }
 }
