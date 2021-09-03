@@ -63,6 +63,8 @@ namespace LaundryIroningBusiness.Entity
             return orderList.ToList();
         }
 
+
+
         public async Task<IroningLaundryOrderViewModel> GetIroningLaundryOrderAsync(int orderId)
         {
             return await _ironingLaundryRepository.GetIroningLaundryOrderAsync(orderId);
@@ -127,7 +129,33 @@ namespace LaundryIroningBusiness.Entity
             return order.Id;
         }
 
-       
+        public async Task<int> AddPromocodesAsync(int promocodeCount, int promoCodeValue)
+        {
+            if (promocodeCount == 0)
+                return (int)StatusCode.ExpectationFailed;
+
+            for (int i = 0; i < promocodeCount; i++)
+            {
+                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@*$!";
+                var random = new Random();
+                var result = new string(
+                    Enumerable.Repeat(chars, 8)
+                              .Select(s => s[random.Next(s.Length)])
+                              .ToArray());
+
+                PromoCodes proCode = new PromoCodes();
+                proCode.PromoCodeId = Guid.NewGuid();
+                proCode.PromoCodePoints = promoCodeValue;
+                proCode.PromoCode = result;
+
+                await _promoCodesRepository.AddAsync(proCode);
+                await _promoCodesRepository.Uow.SaveChangesAsync();
+               
+            }
+            return (int)StatusCode.SuccessfulStatusCode;
+        }
+
+
 
         #endregion
 

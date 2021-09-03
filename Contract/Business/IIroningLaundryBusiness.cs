@@ -17,7 +17,7 @@ namespace LaundryIroningContract.Business
         Task<IroningLaundryOrderViewModel> GetIroningLaundryOrderAsync(int orderId);
         Task<int> AddIroningLaundryOrderAsync(IroningLaundryOrder order);
         Task<List<GetIroningLaundryOrdersForAdmin>> GetIroningLaundryOrdersForAdminAsync();
-
         Task<bool> IsPromoCodeValidAsync(string promoCode);
+        Task<int> AddPromocodesAsync(int promocodeCount, int promoCodeValue);
     }
 }
